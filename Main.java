@@ -1,46 +1,33 @@
-import model.Paciente;
-import model.PacienteAsegurado;
+import datos.RepositorioArchivoCitas;
+import datos.RepositorioArchivoUsuarios;
+import menus.MenuAutenticacion;
+import menus.MenuPrincipal;
+import servicios.ServicioCitas;
+import servicios.ServicioReportes;
+import servicios.ServicioUsuarios;
+import utilidades.Entrada;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.Scanner;
 
 public class Main {
-
     public static void main(String[] args) {
-        System.out.println("====================================");
-        System.out.println("       SISTEMA DE CITAS MEDICAS");
-        System.out.println("====================================");
-
-        System.out.println("\n--- CLASE PADRE: Paciente ---");
-        Paciente paciente1 = new Paciente("Carlos Ramos Torres", 45, "Pediatria", 70);
-        paciente1.mostrarInformacion();
-
-        System.out.println("\n--- CLASE HIJA: PacienteAsegurado ---");
-        PacienteAsegurado paciente2 = new PacienteAsegurado(
-                "Maria Flores Rodriguez", 60, "Cardiologia", 120, "Rimac Seguros", 10);
-        paciente2.mostrarInformacion();
-
-        System.out.println("\n--- HERENCIA: metodos del padre usados por el hijo ---");
-        System.out.println("Nombre (getNombre): " + paciente2.getNombre());
-        System.out.println("Edad (getEdad): " + paciente2.getEdad());
-        System.out.println("Tipo (obtenerTipoAtencion): " + paciente2.obtenerTipoAtencion());
-        paciente2.setCostoConsulta(150);
-        System.out.println("Nuevo costo (setCostoConsulta): S/ " + paciente2.getCostoConsulta());
-        System.out.println("Nuevo total con descuento: S/ " + paciente2.calcularTotal());
-
-        System.out.println("\n--- POLIMORFISMO: referencia Paciente, objetos distintos ---");
-        Paciente[] pacientes = {
-            new Paciente("Ana Soto Vega", 30, "Dermatologia", 90),
-            new PacienteAsegurado("Luis Quispe Diaz", 35, "Medicina General", 80, "Pacifico Seguros", 10),
-            new PacienteAsegurado("Rosa Paredes Luna", 68, "Traumatologia", 200, "Rimac Seguros", 20)
-        };
-
-        double recaudado = 0;
-        for (Paciente p : pacientes) {
-            System.out.println("\nTipo de objeto: " + p.getClass().getSimpleName());
-            p.mostrarInformacion();
-            recaudado += p.calcularTotal();
+        try {
+            Entrada entrada = new Entrada(new Scanner(System.in));
+            ServicioUsuarios usuarios = new ServicioUsuarios(
+                    new RepositorioArchivoUsuarios(Path.of("datos", "usuarios.dat")));
+            ServicioCitas citas = new ServicioCitas(
+                    new RepositorioArchivoCitas(Path.of("datos", "citas.dat")));
+            MenuAutenticacion acceso = new MenuAutenticacion(usuarios, entrada);
+            MenuPrincipal menu = new MenuPrincipal(citas, new ServicioReportes(), entrada);
+            while (true) {
+                if (acceso.autenticar() == null) break;
+                menu.iniciar();
+            }
+            System.out.println("Sistema cerrado.");
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("No se pudieron cargar los datos: " + e.getMessage());
+            System.out.println("Revise que la carpeta datos esté disponible y vuelva a ejecutar.");
         }
-
-        System.out.println("\n====================================");
-        System.out.println("Total recaudado: S/ " + String.format("%.2f", recaudado));
-        System.out.println("====================================");
     }
 }
