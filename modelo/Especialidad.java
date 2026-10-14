@@ -1,8 +1,6 @@
 package modelo;
 
-import java.io.Serializable;
-
-public enum Especialidad implements Serializable {
+public enum Especialidad {
     MEDICINA_GENERAL("Medicina General", 80.0),
     PEDIATRIA("Pediatría", 70.0),
     CARDIOLOGIA("Cardiología", 120.0);
@@ -15,15 +13,24 @@ public enum Especialidad implements Serializable {
         this.costo = costo;
     }
 
-    public String getNombre() { return nombre; }
-    public double getCosto() { return costo; }
+    public String getNombre() {
+        return nombre;
+    }
+
+    public double getCosto() {
+        return costo;
+    }
 
     public static Especialidad desdeOpcion(int opcion) {
         switch (opcion) {
-            case 1: return MEDICINA_GENERAL;
-            case 2: return PEDIATRIA;
-            case 3: return CARDIOLOGIA;
-            default: throw new IllegalArgumentException("La especialidad debe estar entre 1 y 3.");
+            case 1:
+                return MEDICINA_GENERAL;
+            case 2:
+                return PEDIATRIA;
+            case 3:
+                return CARDIOLOGIA;
+            default:
+                throw new IllegalArgumentException("La especialidad debe estar entre 1 y 3.");
         }
     }
 }

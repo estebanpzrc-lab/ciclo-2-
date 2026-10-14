@@ -34,11 +34,20 @@ public class MenuPrincipal {
             System.out.println("4. Cerrar sesión");
             opcion = entrada.leerEntero("Seleccione una opción: ", 1, 4);
             switch (opcion) {
-                case 1: registrarCita(); break;
-                case 2: listarCitas(); break;
-                case 3: mostrarResumen(); break;
-                case 4: System.out.println("Sesión cerrada."); break;
-                default: break;
+                case 1:
+                    registrarCita();
+                    break;
+                case 2:
+                    listarCitas();
+                    break;
+                case 3:
+                    mostrarResumen();
+                    break;
+                case 4:
+                    System.out.println("Sesión cerrada.");
+                    break;
+                default:
+                    break;
             }
         } while (opcion != 4);
     }
@@ -46,7 +55,7 @@ public class MenuPrincipal {
     private void registrarCita() {
         System.out.println("\n--- REGISTRO DE CITA ---");
         String nombre = entrada.leerTextoNoVacio("Nombre del paciente: ");
-        int edad = entrada.leerEntero("Edad (1-120): ", 1, 120);
+        int edad = entrada.leerEntero("Edad (1-90): ", 1, 90);
         System.out.println("1. Medicina General (S/ 80.00)");
         System.out.println("2. Pediatría (S/ 70.00)");
         System.out.println("3. Cardiología (S/ 120.00)");
@@ -69,9 +78,12 @@ public class MenuPrincipal {
             System.out.println("3. Otra aseguradora");
             int opcionAseguradora = entrada.leerEntero("Seleccione aseguradora: ", 1, 3);
             String aseguradora;
-            if (opcionAseguradora == 1) aseguradora = "Rímac Seguros";
-            else if (opcionAseguradora == 2) aseguradora = "Pacífico Seguros";
-            else aseguradora = entrada.leerTextoNoVacio("Nombre de la aseguradora: ");
+            if (opcionAseguradora == 1)
+                aseguradora = "Rímac Seguros";
+            else if (opcionAseguradora == 2)
+                aseguradora = "Pacífico Seguros";
+            else
+                aseguradora = entrada.leerTextoNoVacio("Nombre de la aseguradora: ");
             paciente = new PacienteAsegurado(nombre, edad, especialidad, aseguradora, 10.0);
         } else {
             paciente = new PacienteParticular(nombre, edad, especialidad);
@@ -98,7 +110,8 @@ public class MenuPrincipal {
                 System.out.println(cita.resumen());
             }
         }
-        if (!hayCitas) System.out.println("No hay citas registradas para hoy.");
+        if (!hayCitas)
+            System.out.println("No hay citas registradas para hoy.");
     }
 
     private void mostrarResumen() {

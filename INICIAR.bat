@@ -1,15 +1,22 @@
+
 @echo off
 setlocal
 cd /d "%~dp0"
-if not exist out mkdir out
-(for /r %%F in (*.java) do echo "%%F") > fuentes.tmp
-javac -encoding UTF-8 -d out @fuentes.tmp
-del fuentes.tmp
+
+if not exist "out" mkdir "out"
+
+echo Compilando el sistema de citas medicas...
+javac -encoding UTF-8 -d "out" "Main.java"
+
 if errorlevel 1 (
     echo.
-    echo No se pudo compilar. Verifique que tenga instalado JDK 17 o superior.
+    echo Error al compilar el programa.
     pause
     exit /b 1
 )
-java -cp out Main
+
+echo.
+echo Iniciando el sistema...
+java -cp "out" Main
+
 pause
